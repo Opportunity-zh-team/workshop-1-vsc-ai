@@ -1,0 +1,13 @@
+/* C-0
+    In Screen <control-name>.<control-event>, load <all|first|last|filtered|lookupd> <item-name>(s) from <table-source> <table-name> 
+    into <main-collection-name>. Sort by <column-name>, <sort-order>.
+
+    Schema of <table-name>:
+        Column | Description | Type | Required
+        ... | ... | ... | ...
+
+    <condition-expression>: <action-statement>
+
+    When <variable-name> changes, <control-name> <action-statement>.
+
+*/

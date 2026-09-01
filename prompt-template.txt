@@ -1,0 +1,21 @@
+Role:
+...
+
+Context:
+...
+
+Data Sources:
+SharePoint Tables ...
+
+Controls:
+...
+
+Variables:
+...
+ 
+Requirement:
+...
+ 
+Output:
+Only provide Power Fx code.
+Explain assumptions separately.
