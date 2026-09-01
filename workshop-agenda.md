@@ -57,15 +57,15 @@ Alt + [ | Vorangehenden Vorschlag zeigen (zyklisch) ?
 ## Implementieren - Diskutieren - Testen
 
 1. Testvorbereitung: Temporäre Button und Label(s) anlegen, notwendige Daten bereitstellen
-2. Präzisen Prompt an AI schicken
+2. Präzisen Prompt vorbereiten und an AI schicken
 3. Antwort von AI kritisch lesen
 4. Rückfragen, Korrekturen an AI schicken
 5. Skriptvorschläge von AI in Control(s) übernehmen
 6. Syntax- und Referenz-Fehler beheben
-7. Schlüsselwerte in Label(s) anzeigen lassen
+7. Schlüsselwerte in Label(s) anzeigen lassen (mit lokalen Variablen!)
 8. Testen und Schlüsselwerte prüfen
-9. Bei Problemen, notwendigen Anpassungen: Wieder bei Schritt 2 anfangen!
-10. Weitere Schritte?
+9. Korrigierte Skript-Teile in der App in .fx zurückkopieren
+10. Bei Problemen, notwendigen Anpassungen: Wieder bei Schritt 2 anfangen!
 
 ## AI Halluzinationen
 
@@ -96,8 +96,8 @@ Alt + [ | Vorangehenden Vorschlag zeigen (zyklisch) ?
 
 ## Fragen
 
-- Fragen (schriftlich notieren)
-- Feedback zum Workshop
+- Fragen (pro Teilnehmer schriftlich in Chat)
+- Feedback zum Workshop (pro Teilnehmer schriftlich in Chat)
 - WS KI-gestützte Entwicklung.docx an Teilnehmer verteilen (Chat)
 
 ## Appendix: Material, Voraussetzungen
