@@ -1,3 +1,3 @@
 # workshop-1-vsc-ai
 
-## See [Workshop Agenda](https://github.com/Opportunity-zh-team/workshop-1-vsc-ai/edit/main/)
+## See [Workshop Agenda](https://github.com/Opportunity-zh-team/workshop-1-vsc-ai/blob/main/workshop-agenda.md)
