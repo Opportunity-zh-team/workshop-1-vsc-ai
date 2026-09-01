@@ -15,6 +15,9 @@ Variables:
  
 Requirement:
 ...
+
+Example:
+...
  
 Output:
 Only provide Power Fx code.
