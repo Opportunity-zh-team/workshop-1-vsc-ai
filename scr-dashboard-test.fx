@@ -17,7 +17,9 @@ ClearCollect(ColMain_Meetings, Sort(INT003_Meetings_List, Topic, SortOrder.Ascen
 If(IsBlank(glbSelectedMeetingId), Set(glbSelectedMeetingId, First(ColMain_Meetings).ID));
 
 // Set the local variable locMeetingTopicsCount to the number of rows in ColMain_Meetings.
-Set(locMeetingTopicsCount, CountRows(ColMain_Meetings));
+UpdateContext(
+    { locMeetingsTopicCount: CountRows(colMain_Meetings) }
+);
 
 // For Label1 the text shoud indicate the number of meeting topics in ColMain_Meetings. 
 Label1.Text = "Number of meeting topics: " & Text(locMeetingTopicsCount);
