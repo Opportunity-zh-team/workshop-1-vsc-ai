@@ -16,10 +16,15 @@
 ClearCollect(ColMain_Meetings, Sort(INT003_Meetings_List, Topic, SortOrder.Ascending));
 If(IsBlank(glbSelectedMeetingId), Set(glbSelectedMeetingId, First(ColMain_Meetings).ID));
 
+// Initialize the local variable locMeetingsTopicCount to 0.
+scrDashboard.OnVisible = UpdateContext(
+    { locMeetingsTopicCount: 0 }
+);
+
 // Set the local variable locMeetingTopicsCount to the number of rows in ColMain_Meetings.
 UpdateContext(
     { locMeetingsTopicCount: CountRows(ColMain_Meetings) }
 );
 
 // For Label1 the text shoud indicate the number of meeting topics in ColMain_Meetings. 
-Label1.Text = "Number of meeting topics: " & Text(locMeetingTopicsCount);
+Label1.Text = "Number of meeting topics: " & locMeetingsTopicCount
