@@ -100,7 +100,7 @@ Alt + [ | Vorangehenden Vorschlag zeigen (zyklisch) ?
 - Feedback zum Workshop (pro Teilnehmer schriftlich in Chat)
 - WS KI-gestützte Entwicklung.docx an Teilnehmer verteilen (Chat)
 
-## Appendix: Material, Voraussetzungen
+## Appendix: Material, Voraussetzungen (vorher konsequent bei jedem Teilnehmer prüfen)
 
 - Laptop für jeden Teilnehmer
 - Visual Studio Code installiert
