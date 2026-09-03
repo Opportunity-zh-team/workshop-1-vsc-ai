@@ -96,6 +96,9 @@ When Visual Studio Code prompts you to install Git, install Git for Windows.
 9. Restart Visual Studio Code if necessary.
 10. Confirm that Git is available in Visual Studio Code.
 
+#### Interesting detail: With git installed, you get git bash, a linux terminal emulator, that lets u use Unix commands in Powershell 
+
+
 <!-- Add additional information or screenshots here. -->
 
 ## 7. Verify the Installation
@@ -127,3 +130,5 @@ When Visual Studio Code prompts you to install Git, install Git for Windows.
 
 9. Additional Notes
 <!-- Add additional instructions, screenshots, links, or troubleshooting information here. -->
+
+* Document written by [Gaudenz Raiber](mailto:gaudenz.raiber@zuerich.ch), Date 03/09/2026 [de-DE]
