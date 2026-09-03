@@ -103,7 +103,7 @@ Alt + [ | Vorangehenden Vorschlag zeigen (zyklisch) ?
 ## Appendix: Material, Voraussetzungen (vorher konsequent bei jedem Teilnehmer prüfen)
 
 - Laptop für jeden Teilnehmer (Variante BYOD (Brin your own device))
-- BEi Fehlen von VS Code, Github etc go to 
+- Bei Fehlen von VS Code, Github Desktop und Git siehe wie installiert man [Git, GitHub Desktop and Visual Studio Code Setup](https://github.com/Opportunity-zh-team/workshop-1-vsc-ai/blob/main/Git_Github_Desktop_VsCode.md)
 - Visual Studio Code installiert
 - Copilot Agent aktiviert, eingerichtet (mit Github Copilot, Link ...)
 - https://github.com/Opportunity-zh-team/workshop-1-vsc-ai (Credentials in Bitwarden)
