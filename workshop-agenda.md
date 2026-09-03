@@ -102,7 +102,8 @@ Alt + [ | Vorangehenden Vorschlag zeigen (zyklisch) ?
 
 ## Appendix: Material, Voraussetzungen (vorher konsequent bei jedem Teilnehmer prüfen)
 
-- Laptop für jeden Teilnehmer
+- Laptop für jeden Teilnehmer (Variante BYOD (Brin your own device))
+- BEi Fehlen von VS Code, Github etc go to 
 - Visual Studio Code installiert
 - Copilot Agent aktiviert, eingerichtet (mit Github Copilot, Link ...)
 - https://github.com/Opportunity-zh-team/workshop-1-vsc-ai (Credentials in Bitwarden)
