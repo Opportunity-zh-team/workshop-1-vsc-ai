@@ -76,6 +76,8 @@ This manual explains how to install Visual Studio Code, GitHub Desktop, and Git 
 8. The repository is now open in Visual Studio Code.
 
 <!-- Add additional information or screenshots here. -->
+#### Screenshot:
+<img src="https://private-user-images.githubusercontent.com/42372680/645614068-67437442-4422-42b8-bab8-816fa66b9ad5.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODg0MzAyNjIsIm5iZiI6MTc4ODQyOTk2MiwicGF0aCI6Ii80MjM3MjY4MC82NDU2MTQwNjgtNjc0Mzc0NDItNDQyMi00MmI4LWJhYjgtODE2ZmE2NmI5YWQ1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA5MDMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwOTAzVDEwMDYwMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZiOWMxNDIyZTQzMzA0ZmFjZTVhYzVlM2Y1YWExOGUwY2IyZTY1NmRiM2IyYjljNTU2M2NiNzQ0MDdjZWMzZGEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.j_lOP_2cOL_VGNRw6hPtCtx5ncq5TUwDvZ5c4QmnnIM" alt="Screenshot description" width="800" />
 
 ## 6. Install Git for Windows
 
@@ -102,6 +104,11 @@ When Visual Studio Code prompts you to install Git, install Git for Windows.
 
 
 <!-- Add additional information or screenshots here. -->
+#### Screenshot:
+
+<div style="text-align: center;">
+<img src="https://private-user-images.githubusercontent.com/42372680/645612639-632ac2b4-2242-4c7e-9bd1-48c93ad0e83c.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODg0MzAxMDMsIm5iZiI6MTc4ODQyOTgwMywicGF0aCI6Ii80MjM3MjY4MC82NDU2MTI2MzktNjMyYWMyYjQtMjI0Mi00YzdlLTliZDEtNDhjOTNhZDBlODNjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA5MDMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwOTAzVDEwMDMyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWUwMTUxZjQwNThjMjQ3MTE2YTk5NDVkNjg3ZGMxZDdkYzUxNGE4MWIzN2ZlNjcxNGE3OGMzYzdjMTVlZTY5NjkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.cLriBnpymE1dfyy49NGWlmJdPjqV_h9freUh6G3w1HY" alt="Screenshot description" width="600" />
+</div>
 
 ## 7. Verify the Installation
 
