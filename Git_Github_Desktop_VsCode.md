@@ -7,7 +7,7 @@ This manual explains how to install Visual Studio Code, GitHub Desktop, and Git 
 1. Open a web browser.
 2. Go to the official Visual Studio Code website:
 
-   <https://code.visualstudio.com/>
+   **<https://code.visualstudio.com/>**
 
 3. Download the Windows installer.
 4. Start the downloaded installer.
@@ -24,7 +24,7 @@ This manual explains how to install Visual Studio Code, GitHub Desktop, and Git 
 1. Open a web browser.
 2. Go to the official GitHub Desktop website (Download for Windows 64 bit):
 
-   <https://desktop.github.com/download/>
+   **<https://desktop.github.com/download/>**
 
 3. Download GitHub Desktop for Windows.
 4. Start the downloaded installer.
@@ -79,14 +79,14 @@ This manual explains how to install Visual Studio Code, GitHub Desktop, and Git 
 
 When Visual Studio Code prompts you to install Git, install Git for Windows.
 
-1. Open the following link:
+1. Press prompt Install Git button. If not working try this Link directly:
 
-   [Git - Install for Windows](https://git-scm.com/install/windows)
+   **[Git - Install for Windows](https://git-scm.com/install/windows)**
 
 2. Find the section **Standalone Installer**.
 3. Select the following installer:
 
-   [Git for Windows/x64 Setup](https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe)
+   **[Git for Windows/x64 Setup](https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe)**
 
 4. Download the installer.
 5. Start the downloaded installer.
