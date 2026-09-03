@@ -50,6 +50,7 @@ This manual explains how to install Visual Studio Code, GitHub Desktop, and Git 
 ## 4. Clone an Existing Repository
 
 1. Open GitHub Desktop.
+
 2. Select **File** > **Clone repository**.
 3. Select the **GitHub.com** tab, or enter the repository URL manually.
 4. Select the repository to clone.
@@ -118,6 +119,7 @@ When Visual Studio Code prompts you to install Git, install Git for Windows.
 ## 8. Make Changes and Commit Them
 
 1. Edit or create a file in Visual Studio Code.
+
 2. Save the file.
 3. Open the Source Control view.
 4. Review the changed files.
