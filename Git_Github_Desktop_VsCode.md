@@ -37,6 +37,7 @@ This manual explains how to install Visual Studio Code, GitHub Desktop, and Git 
 ## 3. Create a New Repository
 
 1. Open GitHub Desktop.
+
 2. Select **File** > **New repository**.
 3. Enter a name for the repository.
 4. Select the local folder where the repository should be stored.
