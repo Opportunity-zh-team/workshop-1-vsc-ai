@@ -5,10 +5,10 @@
     The variable names should be: locID, locTopic, locDescription, locStarts, locEnds, locLocation. */
 
 // Code for onChange event of DrpTopicSelection
-UpdateContext({locID: "", locTopic: "", locDescription: "", locStarts: "", locEnds: "", locLocation: ""}); // Clear previous values
-If( !IsBlank(DrpTopicSelection.Selected.Value), 
+UpdateContext({locID: Blank(), locTopic: Blank(), locDescription: Blank(), locStarts: Blank(), locEnds: Blank(), locLocation: Blank()}); // Clear previous values
+If( !IsBlank(DrpTopicSelection.Selected), 
     With(
-        {selectedTopic: DrpTopicSelection.Selected.Value},
+        {selectedTopic: DrpTopicSelection.Selected.Topic},
         ClearCollect(
             colSelectedMeeting,
             Filter(INT003_Meetings_List, Topic = selectedTopic)
