@@ -1,7 +1,7 @@
 /* If I select a topic in the dropdown DrpTopicSelection, the matching entries based on the table
     INT003_Meetings_List should be loaded into local variables. The Dropdown shows columns
     .Topic. The following columns should be loaded into local variables:
-    .ID, .Topic, .Description, .Starts, .Ends, .Location.
+    .ID (int), .Topic (string), .Description (string), .Starts (DateTime), .Ends (DateTime), .Location (string).
     The variable names should be: locID, locTopic, locDescription, locStarts, locEnds, locLocation. */
 
 // Code for onChange event of DrpTopicSelection
