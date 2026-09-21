@@ -114,3 +114,40 @@ Set the Default property of DrpTopicSelection to:
 // I only want the hours of DateTime locStarts
 You can extract the hours from the DateTime variable `locStarts` using the `Hour` function in Power Apps. Here's how you can do it:
 Hour(locStarts)
+
+/* I want to save (patch) participants into the table INT003_Participants_List.
+   The following local variables should be saved into the mentioned columns:
+
+   Meeting_Id (int): locMeetingID
+   Participant_Email (string): locParticipantEmail
+   */
+Patch(
+    INT003_DEV_Participants,
+    Defaults(INT003_DEV_Participants),
+    {
+        Meeting_Id: {
+            Id: locMeetingID,
+            Value: locMeetingID
+        },
+        Participant_Email: locParticipantEmail
+    }
+);
+
+// It should check additionally if the participant already exists for the meeting. If it does, it should not add a new entry but show a notification "Participant already exists for this meeting.". Based on the email.
+If(
+    CountRows(
+        Filter(INT003_DEV_Participants, Meeting_Id.Id = locMeetingID && Participant_Email = locParticipantEmail)
+    ) > 0,
+    Notify("Teilnehmer existiert bereits für dieses Thema.", NotificationType.Error),
+    Patch(
+        INT003_DEV_Participants,
+        Defaults(INT003_DEV_Participants),
+        {
+            Meeting_Id: {
+                Id: locMeetingID,
+                Value: locMeetingID
+            },
+            Participant_Email: locParticipantEmail
+        }
+    )
+);
