@@ -71,3 +71,46 @@ Switch(
     7, "Samstag"
 )
 
+/* For colMainMeetings I would like to add an item "Bitte auswählen..." by .OnVisible of the screen scrMeeting.
+   The item should be added at the top of the collection. The item should have the following values:
+    .ID = 0, .Topic = "Bitte auswählen...", .Description = "", .Starts = Blank(), .Ends = Blank(), .Location = "" */
+ClearCollect(
+    colMainMeetings,
+    {ID: 0, Topic: "Bitte auswählen...", Description: "", Starts: Blank(), Ends: Blank(), Location: ""}
+);
+
+// Now it does not work because the collection is cleared and only the new item is added.
+// Please modify the code so that the existing items of colMainMeetings are kept and the new item is added at the top of the collection.
+AddColumns(
+    colMainMeetings,
+    {ID: 0, Topic: "Bitte auswählen...", Description: "", Starts: Blank(), Ends: Blank(), Location: ""}
+)
+
+// Error: The above code will not work as expected because AddColumns does not modify the existing collection but creates a new table with additional columns. Instead, you can use the following approach to add the new item at the top of the collection while keeping the existing items:
+ClearCollect(
+    colMainMeetings,
+    {ID: 0, Topic: "Bitte auswählen...", Description: "", Starts: Blank(), Ends: Blank(), Location: ""},
+    colMainMeetings
+);
+
+// It stil doesn't work. The content of colMainMeetings is missing. Please modify the code so that the existing items of colMainMeetings are kept and the new item is added at the top of the collection.
+ClearCollect(
+    colMainMeetings,
+    {ID: 0, Topic: "Bitte auswählen...", Description: "", Starts: Blank(), Ends: Blank(), Location: ""},
+    colMainMeetings
+);
+
+// No, still doesn't work. The content of colMainMeetings is missing. Please modify the code so that the existing items of colMainMeetings are kept and the new item is added at the top of the collection.
+ClearCollect(
+    colMainMeetings,
+    {ID: 0, Topic: "Bitte auswählen...", Description: "", Starts: Blank(), Ends: Blank(), Location: ""},
+    Filter(colMainMeetings, ID <> 0) // Keep existing items except the one with ID = 0
+);
+
+// OK, that works. How do I set it so it defaults to "Bitte auswählen..." in the dropdown DrpTopicSelection? You can set the Default property of the dropdown DrpTopicSelection to the item with ID = 0. Here's how you can do it:
+Set the Default property of DrpTopicSelection to:
+    Filter(colMainMeetings, ID = 0)
+
+// I only want the hours of DateTime locStarts
+You can extract the hours from the DateTime variable `locStarts` using the `Hour` function in Power Apps. Here's how you can do it:
+Hour(locStarts)
