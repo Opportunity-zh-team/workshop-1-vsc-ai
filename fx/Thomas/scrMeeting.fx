@@ -151,3 +151,9 @@ If(
         }
     )
 );
+
+/* I want to delete a participant from the table INT003_Participants_List. The participant should be selected in the gallery GalParticipantsScrMeetings. The column Participant_Email should be used to identify the participant to delete based on locParticipantEmailDel. */
+Remove(
+    INT003_Participants_List,
+    LookUp(INT003_Participants_List, Participant_Email = locParticipantEmailDel && Meeting_Id.Id = locMeetingID)
+);
