@@ -42,11 +42,21 @@ Patch(
     {
         Topic: TxtTopic.Text,
         Description: TxtDescription.Text,
-        Starts: DatBegin.SelectedDate,
-        Ends: DatEnd.SelectedDate,
+        Starts: DtpDateBegin.SelectedDate +
+                Time(
+                    Value(DrpMeetingStartHour.Selected.Value),
+                    Value(DrpMeetingStartMinutes.Selected.Value),
+                    0
+                ),
+        Ends: DtpDateEnd.SelectedDate +
+                Time(
+                    Value(DrpMeetingEndHour.Selected.Value),
+                    Value(DrpMeetingEndMinutes.Selected.Value),
+                    0
+                ),
         Location: TxtRoom.Text
     }
-)
+);
 
 // Please reset all the input fields after the patch is executed. The input fields are:
 // TxtTopic, TxtDescription, DatBegin, DatEnd, TxtRoom.
@@ -157,3 +167,254 @@ Remove(
     INT003_Participants_List,
     LookUp(INT003_Participants_List, Participant_Email = locParticipantEmailDel && Meeting_Id.Id = locMeetingID)
 );
+
+/* If locNewMeetingMode is set to true, the patch should create a new meeting in the table INT003_Meetings_List.
+   The following input fields should be used to create the new meeting:
+
+   Topic (string): TxtTopic
+   Description (string): TxtDescription
+   Starts (DateTime): DtpDateBegin.SelectedDate +
+                Time(
+                    Value(DrpMeetingStartHour.Selected.Value),
+                    Value(DrpMeetingStartMinutes.Selected.Value),
+                    0
+                )
+   Ends (DateTime): DtpDateEnd.SelectedDate +
+                Time(
+                    Value(DrpMeetingEndHour.Selected.Value),
+                    Value(DrpMeetingEndMinutes.Selected.Value),
+                    0
+                )
+   Location (string): TxtRoom
+*/
+Patch(
+    INT003_Meetings_List,
+    Defaults(INT003_Meetings_List),
+    {
+        Topic: TxtTopic.Text,
+        Description: TxtDescription.Text,
+        Starts: DtpDateBegin.SelectedDate +
+                Time(
+                    Value(DrpMeetingStartHour.Selected.Value),
+                    Value(DrpMeetingStartMinutes.Selected.Value),
+                    0
+                ),
+        Ends: DtpDateEnd.SelectedDate +
+                Time(
+                    Value(DrpMeetingEndHour.Selected.Value),
+                    Value(DrpMeetingEndMinutes.Selected.Value),
+                    0
+                ),
+        Location: TxtRoom.Text
+    }
+);
+
+// Now combine the two patches into one formula. If locNewMeetingMode is true, it should create a new meeting, otherwise it should update the existing meeting.
+If(
+    locNewMeetingMode,
+    Patch(
+        INT003_Meetings_List,
+        Defaults(INT003_Meetings_List),
+        {
+            Topic: TxtTopic.Text,
+            Description: TxtDescription.Text,
+            Starts: DtpDateBegin.SelectedDate +
+                    Time(
+                        Value(DrpMeetingStartHour.Selected.Value),
+                        Value(DrpMeetingStartMinutes.Selected.Value),
+                        0
+                    ),
+            Ends: DtpDateEnd.SelectedDate +
+                    Time(
+                        Value(DrpMeetingEndHour.Selected.Value),
+                        Value(DrpMeetingEndMinutes.Selected.Value),
+                        0
+                    ),
+            Location: TxtRoom.Text
+        }
+    ),
+    Patch(
+        INT003_Meetings_List,
+        LookUp(INT003_Meetings_List, ID = locMeetingID),
+        {
+            Topic: TxtTopic.Text,
+            Description: TxtDescription.Text,
+            Starts: DtpDateBegin.SelectedDate +
+                    Time(
+                        Value(DrpMeetingStartHour.Selected.Value),
+                        Value(DrpMeetingStartMinutes.Selected.Value),
+                        0
+                    ),
+            Ends: DtpDateEnd.SelectedDate +
+                    Time(
+                        Value(DrpMeetingEndHour.Selected.Value),
+                        Value(DrpMeetingEndMinutes.Selected.Value),
+                        0
+                    ),
+            Location: TxtRoom.Text
+        }
+    )
+);
+
+/* The same needs to be done to add a new record to the collection colMainMeetings.
+   If locNewMeetingMode is true, it should add a new record to the collection, otherwise it should update the existing record in the collection.
+
+   Following is the current code for updateing the collection:
+UpdateIf(
+    colMainMeetings,
+    meetID = locMeetingID,
+    {
+        meetTopic: TxtTopic.Text,
+        meetDescription: TxtDescription.Text,
+        meetStarts: DtpDateBegin.SelectedDate +
+                Time(
+                    Value(DrpMeetingStartHour.Selected.Value),
+                    Value(DrpMeetingStartMinutes.Selected.Value),
+                    0
+                ),
+        meetEnds: DtpDateEnd.SelectedDate +
+                Time(
+                    Value(DrpMeetingEndHour.Selected.Value),
+                    Value(DrpMeetingEndMinutes.Selected.Value),
+                    0
+                ),
+        meetLocation: TxtRoom.Text
+    }
+); */
+If (
+    locNewMeetingMode,
+    Collect(
+        colMainMeetings,
+        {
+            meetID: Max(colMainMeetings, meetID) + 1,
+            meetTopic: TxtTopic.Text,
+            meetDescription: TxtDescription.Text,
+            meetStarts: DtpDateBegin.SelectedDate +
+                    Time(
+                        Value(DrpMeetingStartHour.Selected.Value),
+                        Value(DrpMeetingStartMinutes.Selected.Value),
+                        0
+                    ),
+            meetEnds: DtpDateEnd.SelectedDate +
+                    Time(
+                        Value(DrpMeetingEndHour.Selected.Value),
+                        Value(DrpMeetingEndMinutes.Selected.Value),
+                        0
+                    ),
+            meetLocation: TxtRoom.Text
+        }
+    ),
+    UpdateIf(
+        colMainMeetings,
+        meetID = locMeetingID,
+        {
+            meetTopic: TxtTopic.Text,
+            meetDescription: TxtDescription.Text,
+            meetStarts: DtpDateBegin.SelectedDate +
+                    Time(
+                        Value(DrpMeetingStartHour.Selected.Value),
+                        Value(DrpMeetingStartMinutes.Selected.Value),
+                        0
+                    ),
+            meetEnds: DtpDateEnd.SelectedDate +
+                    Time(
+                        Value(DrpMeetingEndHour.Selected.Value),
+                        Value(DrpMeetingEndMinutes.Selected.Value),
+                        0
+                    ),
+            meetLocation: TxtRoom.Text
+        }
+    )
+);
+
+/* I need to update the local variable locMeetingID with the ID of the newly created meeting. How can I do that? You can update the variable locMeetingID with the ID of the newly created meeting by using the Last function to get the last item added to the collection colMainMeetings. Here's how you can do it: */
+UpdateContext({locMeetingID: Last(colMainMeetings).meetID});
+
+// Can you sort this collection colUI_MeetingsDrp by the column meetTopic?
+Yes, you can sort the collection `colUI_MeetingsDrp` by the column `meetTopic` using the `Sort` function in Power Apps. Here's how you can do it:
+Sort(colUI_MeetingsDrp, meetTopic)
+
+/* If a new topic is created, it should check if the entry already exists in the collection colMainMeetings. If it does, it should not add a new entry but show a notification "Topic already exists.". Based on the topic name. */
+If(
+    CountRows(
+        Filter(colMainMeetings, meetTopic = TxtTopic.Text)
+    ) > 0,
+    Notify("Thema existiert bereits.", NotificationType.Error),
+);
+
+// This additionally needs to apply trim und upper-/lowercase should not be considered. So it should check if the topic already exists in the collection colMainMeetings, ignoring leading/trailing spaces and case sensitivity. If it does, it should not add a new entry but show a notification "Topic already exists." based on the topic name.
+If(
+    CountRows(
+        Filter(colMainMeetings, Lower(Trim(meetTopic)) = Lower(Trim(TxtTopic.Text)))
+    ) > 0,
+    Notify("Thema existiert bereits.", NotificationType.Error),
+);
+
+/* Can this be done with lookUp instead of filtering:
+If(
+    !IsBlank(DrpTopicSelection.Selected),
+    With(
+        { selectedTopic: DrpTopicSelection.Selected.meetTopic },
+        ClearCollect(
+            colSelectedMeeting,
+            Filter(colMainMeetings, meetTopic = selectedTopic)
+        );
+        If(
+            CountRows(colSelectedMeeting) > 0,
+            UpdateContext({
+                locNewMeetingMode: false, // Needed for correct patch.
+                locMeetingID: First(colSelectedMeeting).meetID,
+                locTopic: First(colSelectedMeeting).meetTopic,
+                locDescription: First(colSelectedMeeting).meetDescription,
+                locStarts: First(colSelectedMeeting).meetStarts,
+                locEnds: First(colSelectedMeeting).meetEnds,
+                locLocation: First(colSelectedMeeting).meetLocation
+            })
+        )
+    )
+); */
+It is possible to use LookUp instead of Filter in this case. The LookUp function returns the first record that matches the specified condition, so you can simplify the code as follows:
+If(
+    !IsBlank(DrpTopicSelection.Selected),
+    With(
+        { selectedTopic: DrpTopicSelection.Selected.meetTopic },
+        ClearCollect(
+            colSelectedMeeting,
+            LookUp(colMainMeetings, meetTopic = selectedTopic)
+        );
+        If(
+            CountRows(colSelectedMeeting) > 0,
+            UpdateContext({
+                locNewMeetingMode: false, // Needed for correct patch.
+                locMeetingID: First(colSelectedMeeting).meetID,
+                locTopic: First(colSelectedMeeting).meetTopic,
+                locDescription: First(colSelectedMeeting).meetDescription,
+                locStarts: First(colSelectedMeeting).meetStarts,
+                locEnds: First(colSelectedMeeting).meetEnds,
+                locLocation: First(colSelectedMeeting).meetLocation
+            })
+        )
+    )
+);
+
+// Is First really needed in this case? Since LookUp returns a single record, you can directly access the fields of that record without using First. Here's the modified code:
+With(
+    {
+        varSelectedMeeting: LookUp(
+            colMainMeetings,
+            meetTopic = DrpTopicSelection.Selected.meetTopic
+        )
+    },
+    If(
+        !IsBlank(varSelectedMeeting),
+        UpdateContext({
+            locNewMeetingMode: false, // Needed for correct patch, Edit mode. Thomas 23.09.2026
+            locMeetingID: varSelectedMeeting.meetID,
+            locTopic: varSelectedMeeting.meetTopic,
+            locDescription: varSelectedMeeting.meetDescription,
+            locStarts: varSelectedMeeting.meetStarts,
+            locEnds: varSelectedMeeting.meetEnds,
+            locLocation: varSelectedMeeting.meetLocation
+        })
+    )
+)
