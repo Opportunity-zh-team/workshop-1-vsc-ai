@@ -418,3 +418,115 @@ With(
         })
     )
 )
+
+// Would like to adjust this, so that it also removes spaces and - for the check if the topic is the same:     CountRows(Filter(colMainMeetings, Lower(Trim(meetTopic)) = Lower(Trim(TxtTopic.Text)) )) > 0, Notify("Sitzungsthema existiert bereits.", NotificationType.Error), //Check if the topic already exists Thomas 23.09.2026 #scr-meeting-topic-check-double-entry
+You can modify the condition to remove spaces and hyphens for the check by using the `Substitute` function along with `Trim` and `Lower`. Here's how you can adjust the code:
+If(
+    CountRows(
+        Filter(
+            colMainMeetings,
+            Lower(Substitute(Trim(meetTopic), "-", "")) = Lower(Substitute(Trim(TxtTopic.Text), "-", ""))
+        )
+    ) > 0,
+    Notify("Sitzungsthema existiert bereits.", NotificationType.Error), // Check if the topic already exists
+)
+
+// That does work, but I would like to also remove all spaces in the topic name. So it should check if the topic already exists in the collection colMainMeetings, ignoring leading/trailing spaces, hyphens and all spaces. If it does, it should not add a new entry but show a notification "Topic already exists." based on the topic name.
+You can further modify the condition to remove all spaces in addition to hyphens and leading/trailing spaces by using the `Substitute` function multiple times. Here's the updated code:
+If(
+    CountRows(
+        Filter(
+            colMainMeetings,
+            Lower(Substitute(Substitute(Trim(meetTopic), "-", ""), " ", "")) = Lower(Substitute(Substitute(Trim(TxtTopic.Text), "-", ""), " ", ""))
+        )
+    ) > 0,
+    Notify("Sitzungsthema existiert bereits.", NotificationType.Error), // Check if the topic already exists
+)
+
+// That owrks well. But it should also ignore underscores. So it should check if the topic already exists in the collection colMainMeetings, ignoring leading/trailing spaces, hyphens, underscores and all spaces. If it does, it should not add a new entry but show a notification "Topic already exists." based on the topic name.
+You can modify the condition to also ignore underscores by adding another `Substitute` function. Here's the updated code that ignores leading/trailing spaces, hyphens, underscores, and all spaces:
+If(
+    CountRows(
+        Filter(
+            colMainMeetings,
+            Lower(
+                Substitute(
+                    Substitute(
+                        Substitute(Trim(meetTopic), "-", ""),
+                        "_", ""
+                    ),
+                    " ", ""
+                )
+            ) = Lower(
+                Substitute(
+                    Substitute(
+                        Substitute(Trim(TxtTopic.Text), "-", ""),
+                        "_", ""
+                    ),
+                    " ", ""
+                )
+            )
+        )
+    ) > 0,
+    Notify("Sitzungsthema existiert bereits.", NotificationType.Error), // Check if the topic already exists
+)
+
+// Can you do that on less rows?
+Yes, you can simplify the code by using a single `Substitute` function with a regular expression to remove all unwanted characters (spaces, hyphens, and underscores) in one go. However, Power Apps does not support regular expressions directly. Instead, you can chain the `Substitute` functions more concisely. Here's a more compact version:
+If(
+    CountRows(
+        Filter(
+            colMainMeetings,
+            Lower(
+                Substitute(
+                    Substitute(
+                        Substitute(Trim(meetTopic), "-", ""),
+                        "_", ""
+                    ),
+                    " ", ""
+                )
+            ) = Lower(
+                Substitute(
+                    Substitute(
+                        Substitute(Trim(TxtTopic.Text), "-", ""),
+                        "_", ""
+                    ),
+                    " ", ""
+                )
+            )
+        )
+    ) > 0,
+    Notify("Sitzungsthema existiert bereits.", NotificationType.Error) // Check if the topic already exists
+)
+
+// That is good. But it should only be checked if locNewMeetingMode=true
+You can add a condition to check if `locNewMeetingMode` is true before performing the duplicate topic check. Here's the updated code:
+If(
+    locNewMeetingMode && CountRows(
+        Filter(
+            colMainMeetings,
+            Lower(
+                Substitute(
+                    Substitute(
+                        Substitute(Trim(meetTopic), "-", ""),
+                        "_", ""
+                    ),
+                    " ", ""
+                )
+            ) = Lower(
+                Substitute(
+                    Substitute(
+                        Substitute(Trim(TxtTopic.Text), "-", ""),
+                        "_", ""
+                    ),
+                    " ", ""
+                )
+            )
+        )
+    ) > 0,
+    Notify("Sitzungsthema existiert bereits.", NotificationType.Error) // Check if the topic already exists
+)
+
+// Can you set that to 8:30AM: locEnds: Today()
+Yes, you can set `locEnds` to 9:00 AM of the current day using the `DateAdd` function along with `Today()`. Here's how you can do it:
+locEnds: Today() + Time(9, 00, 0)
