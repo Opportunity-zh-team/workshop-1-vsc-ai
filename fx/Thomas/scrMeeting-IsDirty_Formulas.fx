@@ -15,8 +15,11 @@ If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
                         0
                     ) ||
     Trim(locLocation) <> Trim(TxtRoom.Text),
+
+    // Trigger popup ---------------------------------------------------------------------------
     UpdateContext( {locIsDirtyDashboard: true}), // activates confirmation screen @Thomas 28.09.2026 #scr-meeting-check-isdirty-dashboardbutton-confirmation
     
+    // Continue with navigation -----------------------------------------------------------------
     // If no changes pending, go to scrDashboard. @Thomas 28.09.2026 ##scr-meeting-button-dashboard
     UpdateContext({locMeetingID: Blank(), locTopic: Blank(), locLastSavedTopic: Blank(), locNewMeetingMode: false, locDescription: Blank(), locStarts: Blank(), locEnds: Blank(), locLocation: Blank()}); // Clear previous values
 
@@ -51,9 +54,11 @@ If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
                         0
                     ) ||
     Trim(locLocation) <> Trim(TxtRoom.Text),
+
+    // Trigger popup ---------------------------------------------------------------------------
     UpdateContext( {locIsDirtyChangeTopic: true}), // activates confirmation screen @Thomas 28.09.2026 #scr-meeting-check-isdirty-changetopic-confirmation
 
-
+    // Select other topic -----------------------------------------------------------------
     // Reset local variables. @Thomas #screen-meeting-topic-dropdown
     UpdateContext({
         locMeetingID: Blank(),
@@ -105,8 +110,11 @@ If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
                         0
                     ) ||
     Trim(locLocation) <> Trim(TxtRoom.Text),
+
+    // Trigger popup ---------------------------------------------------------------------------
     UpdateContext( {locIsDirtyNewTopic: true}), // activates confirmation screen @Thomas 28.09.2026 #scr-meeting-check-isdirty-newtopic-confirmation
 
+    // Create new topic -----------------------------------------------------------------
     // Set variable for new topic mode and reset detail fields. @Thomas 23.09.2026 #scr-meeting-new-topic
     UpdateContext({
         locNewMeetingMode: true, // Needed for correct patch. @Thomas #scr-meeting-new-topic-variable
@@ -135,25 +143,6 @@ If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
 )
 
 
-LblNotYetSaved.Text =
-// Label that shows if there are unsaved changes. @Thomas 29.09.2026 #scr-meeting-isdirty-label
-If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
-    Trim(locDescription) <> Trim(TxtDescription.Text) ||
-    locStarts <> DtpDateBegin.SelectedDate +
-                    Time(
-                        Value(DrpMeetingStartHour.Selected.Value),
-                        Value(DrpMeetingStartMinutes.Selected.Value),
-                        0
-                    ) ||
-    locEnds <> DtpDateEnd.SelectedDate +
-                    Time(
-                        Value(DrpMeetingEndHour.Selected.Value),
-                        Value(DrpMeetingEndMinutes.Selected.Value),
-                        0
-                    ) ||
-    Trim(locLocation) <> Trim(TxtRoom.Text) ,"Änderungen noch nicht gespeichert.", "")
-
-
 BtnStartMeeting.OnSelect =
 // Check if there are unsaved changes. @Thomas 28.09.2026 #scr-meeting-check-isdirty-protocolbutton
 If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
@@ -171,8 +160,11 @@ If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
                         0
                     ) ||
     Trim(locLocation) <> Trim(TxtRoom.Text),
+
+    // Trigger popup ---------------------------------------------------------------------------
     UpdateContext( {locIsDirtyProtocol: true}), // activates confirmation screen @Thomas 28.09.2026 #scr-meeting-check-isdirty-protocolbutton-confirmation
     
+    // Continue with navigation -----------------------------------------------------------------
     Reset(TxtTopic);
     Reset(TxtDescription);
     Reset(DtpDateBegin);
@@ -189,3 +181,23 @@ If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
     UpdateContext({locMeetingID: Blank(), locTopic: Blank(), locLastSavedTopic: Blank(), locNewMeetingMode: false, locDescription: Blank(), locStarts: Blank(), locEnds: Blank(), locLocation: Blank()}); // Clear previous values. @Thomas ##scr-meeting-button-protocol
 
 );
+
+
+
+LblNotYetSaved.Text =
+// Label that shows if there are unsaved changes. @Thomas 29.09.2026 #scr-meeting-isdirty-label
+If( Trim(locTopic) <> Trim(TxtTopic.Text) ||
+    Trim(locDescription) <> Trim(TxtDescription.Text) ||
+    locStarts <> DtpDateBegin.SelectedDate +
+                    Time(
+                        Value(DrpMeetingStartHour.Selected.Value),
+                        Value(DrpMeetingStartMinutes.Selected.Value),
+                        0
+                    ) ||
+    locEnds <> DtpDateEnd.SelectedDate +
+                    Time(
+                        Value(DrpMeetingEndHour.Selected.Value),
+                        Value(DrpMeetingEndMinutes.Selected.Value),
+                        0
+                    ) ||
+    Trim(locLocation) <> Trim(TxtRoom.Text) ,"Änderungen noch nicht gespeichert.", "")
