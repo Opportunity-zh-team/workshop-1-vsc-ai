@@ -530,3 +530,4 @@ If(
 // Can you set that to 8:30AM: locEnds: Today()
 Yes, you can set `locEnds` to 9:00 AM of the current day using the `DateAdd` function along with `Today()`. Here's how you can do it:
 locEnds: Today() + Time(9, 00, 0)
+
