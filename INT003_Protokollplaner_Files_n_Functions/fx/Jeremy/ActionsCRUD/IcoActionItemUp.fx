@@ -75,3 +75,45 @@ With(
         )
     )
 )
+
+/*
+MENTAL MODEL of the process UP (swap with upper neighbor):
+tap up on C (order 3)
+   ↓
+find nearest saved row above → B (order 2)
+   ↓
+grab both IDs and both orders
+   ↓
+swap the two order values locally (B↔C)  → gallery re-sorts, feels instant
+   ↓
+swap the two order values in SharePoint (batch patch)
+   ↓
+if error → swap back locally AND in SharePoint, notify  DisplayMode of the button is disabled if the action is the first in the list (no upper neighbor)
+
+// -------
+
+Mental model of the process DOWN (swap with lower neighbor):
+tap down on B (order 2)
+   ↓
+find nearest saved row below → C (order 3)
+   ↓
+grab both IDs and both orders
+   ↓
+swap the two order values locally (B↔C)  → gallery re-sorts, feels instant
+   ↓
+swap the two order values in SharePoint (batch patch)
+   ↓
+if error → swap back locally AND in SharePoint, notify
+
+// -------
+
+One-Line-Essence: Swap the Sort_Order of the selected action with its nearest neighbor (up or down) in both local collections and SharePoint, with instant UI feedback and error handling.
+
+pick neighbor (above for ↑, below for ↓)
+   ↓
+swap orders locally  → instant visual
+   ↓
+swap orders in SharePoint
+   ↓
+on error → undo both, notify
+*/
