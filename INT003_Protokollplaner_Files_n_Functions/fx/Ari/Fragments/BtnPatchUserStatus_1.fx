@@ -1,4 +1,14 @@
 // OnSelect
+// Persists the current user's requested concurrency status to
+// INT003_Concurrency_States_List. The guarded block runs only when a target status
+// and the current user's email are present. It looks up the current user's row,
+// normalizes non-positive meeting/protocol IDs to -1, and patches only when the
+// row is absent or one of the compared status/ID fields differs; Heartbeat is then
+// set to Now(). A failed Patch displays an error notification.
+//
+// After the guarded block, regardless of whether it ran or the Patch succeeded,
+// targetStatusName and targetUserEmail are cleared and the user-permission timer
+// is started. targetUserEmail is not used to select the row; glbUserEmail is.
 If(
     SCS.targetStatusName <> "" && glbUserEmail <> "" && !IsBlank(glbUserEmail),
     With(

@@ -1,7 +1,13 @@
 // Items
+// The gallery displays the actions already loaded for the selected protocol.
 colCurrentActions
 
 // LblOverviewTab.Text
+// Creates a compact preview of the selected protocol's text for the overview tab.
+// Rich text is converted to plain text, line breaks are flattened, and whitespace
+// is trimmed. If the result exceeds 60 characters, it is cut at the last space
+// within the first 60 characters (or exactly at 60 if there is no space) and
+// suffixed with " ...". The global ID check is for non-blank, not a positive ID.
 With(
     {
         txt: Trim(
