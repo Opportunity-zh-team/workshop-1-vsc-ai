@@ -1,0 +1,784 @@
+Screens:
+  ScrAbsenceForm:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      OnVisible: |-
+        =// @chris #update-col-main-employees ///////////////////////////////////////////////////////////////////////////////////////
+        // IT IS NOT NECESSARY TO RELOAD Pers001_Employees INTO ColMain_Employees FOR THIS SCREEN!
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // --- SETUP ScrAbsenceForm.OnVisible @gaudenz START
+        // #settings-to-make-ScrAllAbsencesList-gaudenz-work
+
+        // Reload absences so new records appear immediately
+        // Reload employees
+        ClearCollect(
+            ColMain_Employees,
+            AddColumns(
+                Pers001_Employees,
+                EmployeeFullName, First_Name & " " & Last_Name
+            )
+        );
+
+        // Reload absences
+        ClearCollect(
+            colAbsences,
+            AddColumns(
+                Pers001_Absences,
+                EmployeeId, Employee_Id.Id,
+                EmployeeName,
+                    LookUp(
+                        ColMain_Employees,
+                        ID = Employee_Id.Id,
+                        EmployeeFullName
+                    ),
+                ReasonValue, Reason.Value,
+                StatusValue, Status.Value
+            )
+        );
+
+        // Reload employee filter list
+        ClearCollect(
+            colEmployeeFilter,
+            { EmployeeName: "Alle" }
+        );
+        ForAll(
+            ColMain_Employees, // #update-col-main-employees
+            Collect(colEmployeeFilter, { EmployeeName: EmployeeFullName })
+        );
+
+        // Set current employee
+        Set(
+            gblEmployee,
+            LookUp(
+                ColMain_Employees, // #update-col-main-employees 
+                Email = User().Email)
+        );
+        // --- SETUP ScrAbsenceForm.OnVisible @gaudenz STOPP
+    Children:
+      - conMainApp:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Height: =App.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            Width: =App.Width
+          Children:
+            - conHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: |
+                    =RGBA(246, 169, 96, 1)
+                  FillPortions: =0.1
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  RadiusBottomLeft: =2
+                  RadiusBottomRight: =2
+                  RadiusTopLeft: =2
+                  RadiusTopRight: =2
+                  Width: =App.Width
+                Children:
+                  - LblAppNameAbsenceForm_1:
+                      Control: Label@2.5.1
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Start
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =Color.White
+                        Font: =Font.Arial
+                        FontWeight: =FontWeight.Semibold
+                        Height: =Parent.Height - 20
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Size: =26
+                        Text: ="Absenzen - Monitoring"
+                        Width: =220
+                  - ContLogoFontAbsenceForm_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0.6
+                        LayoutAlignItems: =LayoutAlignItems.End
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingLeft: =4
+                        PaddingRight: =8
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                      Children:
+                        - IImgOfficeAppsLogoAbsenceForm_1:
+                            Control: Image@2.2.3
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Height: =40
+                              Image: =OfficApps_Logo_Small
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Width: =70
+                        - LblLogoFontOfficeAppsAbsenceForm_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Right
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =Color.White
+                              Font: =Font.Arial
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              Size: =12
+                              Text: ="Office Apps"
+                              Width: =130
+                  - BtnNav_ScrAbsencesEmployeeList_1:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =Color.White
+                        BorderThickness: =4
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                        Fill: '=RGBA(246, 169, 96, 1)   '
+                        Font: =Font.Arial
+                        Height: =Parent.Height - 40
+                        HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =ColorFade(RGBA(246, 169, 96, 1), -20%)
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        OnSelect: =Navigate(ScrAbsencesEmployeeList,ScreenTransition.None);
+                        PressedBorderColor: =Self.Fill
+                        PressedColor: =Self.Fill
+                        PressedFill: =Self.Color
+                        RadiusBottomLeft: =Parent.Height / 2
+                        RadiusBottomRight: =Parent.Height / 2
+                        RadiusTopLeft: '=Parent.Height / 2   '
+                        RadiusTopRight: =Parent.Height / 2
+                        Size: =28
+                        Text: ="Home"
+                        Visible: |+
+                          =// #header-buttons-order-activity: visible only on screen "ScrAbsencesEmployeeList"
+                          If(
+                              App.ActiveScreen.Name <> "ScrAbsencesEmployeeList", 
+                              true, 
+                              false
+                          )
+
+                        Width: =200
+            - conUserInfo:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.Center
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0.2
+                  Height: =200
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutMinWidth: =0
+                  PaddingBottom: =12
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =12
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Width: =Parent.Width - 32
+                  X: =16
+                Children:
+                  - LblÜberschriftAbsenzenformular_1:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(128, 128, 128, 1)
+                        Font: =Font.Arial
+                        FontWeight: =FontWeight.Bold
+                        Height: =50
+                        PaddingLeft: =0
+                        Size: =30
+                        Text: |+
+                          ="Absenzenformular"
+                          // Form1_1.Mode & " | " & Form1_1.Item.ID
+                        Width: =Parent.Width
+                        X: =30
+                        Y: =38
+                  - LblUserFullname_1:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(128, 128, 128, 1)
+                        Font: =Font.Arial
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        PaddingLeft: =0
+                        Size: =20
+                        Text: =Office365Users.MyProfile().GivenName & " " & Office365Users.MyProfile().Surname
+                        Width: =Parent.Width
+                        X: =2
+                        Y: =50
+                  - LblUserEmail_1:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Color: =RGBA(128, 128, 128, 1)
+                        Font: =Font.Arial
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        PaddingLeft: =0
+                        Size: =20
+                        Text: =Office365Users.MyProfile().Mail
+                        Width: =Parent.Width
+                        X: =2
+                        Y: =80
+            - conBody:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  Width: =App.Width
+                Children:
+                  - conFieldReason:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =8
+                      Children:
+                        - LblÜberschriftGrund_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(128, 128, 128, 1)
+                              Font: =Font.Arial
+                              FontWeight: =FontWeight.Semibold
+                              Height: =40
+                              PaddingLeft: =0
+                              PaddingTop: =0
+                              Size: =28
+                              Text: ="Grund*"
+                              Width: =App.Width / 3
+                              X: =30
+                              Y: =157
+                        - DrpReason_1:
+                            Control: Classic/DropDown@2.3.1
+                            Properties:
+                              BorderColor: =RGBA(194, 194, 194, 1)
+                              BorderThickness: =1
+                              ChevronBackground: |-
+                                =// #correct-color-ChevronBackground-in-all-dropdowns
+                                Color.Transparent
+                              ChevronFill: |-
+                                =// #correct-color-ChevronFill-in-all-dropdowns
+                                RGBA(124, 124, 124, 1)
+                              ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                              ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                              Color: =RGBA(124, 124, 124, 1)
+                              Default: =""
+                              Font: =Font.Arial
+                              Height: '=Parent.Height - 50  '
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              Items: |+
+                                =//Choices(Pers001_Absences.Reason)
+
+                                Table(
+                                    {DisplayName: "Bitte Wählen..."},
+                                    SortByColumns(
+                                        AddColumns(
+                                            Choices(Pers001_Absences.Reason),
+                                            DisplayName,
+                                            Value
+                                        ),
+                                        "DisplayName"
+                                    )
+                                )
+
+                              Items.Value: =DisplayName
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 18, 107, 1)
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(194, 194, 194, 1)
+                              Size: =24
+                              Width: =App.Width / 2
+                              X: =2
+                              Y: =40
+                  - conFieldDateFrom:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =8
+                      Children:
+                        - LblÜberschriftDatumVon_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(128, 128, 128, 1)
+                              Font: =Font.Arial
+                              FontWeight: =FontWeight.Semibold
+                              Height: =40
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Size: =28
+                              Text: ="Datum von"
+                              Width: =App.Width / 3
+                              X: =30
+                              Y: =139
+                        - DpStarts_1:
+                            Control: Classic/DatePicker@2.6.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(194, 194, 194, 1)
+                              BorderThickness: =1
+                              Color: =RGBA(124, 124, 124, 1)
+                              Font: =Font.Arial
+                              Height: '=Parent.Height - 50  '
+                              IconBackground: =RGBA(194, 194, 194, 1)
+                              IconFill: =RGBA(255, 255, 255, 1)
+                              Language: ="de-DE"
+                              OnChange: |-
+                                =If(
+                                    DpEnds_1.SelectedDate < DpStarts_1.SelectedDate,
+                                    Reset(DpEnds_1)
+                                )
+                              PaddingBottom: =0
+                              StartOfWeek: =StartOfWeek.Monday
+                              Width: =App.Width / 2
+                              X: =30
+                              Y: =40
+                  - conFieldDateTo:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =8
+                      Children:
+                        - LblÜberschriftDatumBis_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(128, 128, 128, 1)
+                              Font: =Font.Arial
+                              FontWeight: =FontWeight.Semibold
+                              Height: =40
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingTop: =0
+                              Size: =28
+                              Text: ="Datum bis"
+                              Visible: =!(DrpReason_1.Selected.DisplayName in ["Verspätung", "Bitte Wählen..."])
+                              Width: =App.Width / 3
+                              X: =322
+                              Y: =138
+                        - DpEnds_1:
+                            Control: Classic/DatePicker@2.6.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(194, 194, 194, 1)
+                              BorderThickness: =1
+                              Color: =RGBA(124, 124, 124, 1)
+                              DefaultDate: |
+                                =If(
+                                    DrpReason_1.Selected.Value = "Verspätung",
+                                    Blank(),
+                                    If(
+                                        IsBlank(DpStarts_1.SelectedDate),
+                                        Today(),
+                                        DpStarts_1.SelectedDate
+                                    )
+                                )
+                              Font: =Font.Arial
+                              Height: '=Parent.Height - 50  '
+                              IconBackground: =RGBA(194, 194, 194, 1)
+                              IconFill: =RGBA(255, 255, 255, 1)
+                              Language: ="de-DE"
+                              OnChange: |-
+                                =If(
+                                    DrpReason_1.Selected.Value = "Verspätung",
+                                    Reset(DpEnds_1)
+                                );
+
+                                If(
+                                    DpEnds_1.SelectedDate < DpStarts_1.SelectedDate,
+                                    Reset(DpEnds_1)
+                                )
+                              PaddingBottom: =0
+                              StartOfWeek: =StartOfWeek.Monday
+                              Visible: =!(DrpReason_1.Selected.DisplayName in ["Verspätung", "Bitte Wählen..."])
+                              Width: '=App.Width / 2   '
+                              X: =322
+                              Y: =41
+                  - conFieldRemark:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =1.5
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =8
+                        Visible: =false
+                      Children:
+                        - LblÜberschriftBemerkung_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Start
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(128, 128, 128, 1)
+                              FillPortions: =0.5
+                              Font: =Font.Arial
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              Size: =28
+                              Text: ="Bemerkung"
+                              X: =30
+                              Y: =240
+                        - TxtRemark_1:
+                            Control: Classic/TextInput@2.3.2
+                            Properties:
+                              BorderColor: =RGBA(194, 194, 194, 1)
+                              BorderThickness: =1
+                              Color: =RGBA(124, 124, 124, 1)
+                              Default: =
+                              FillPortions: =1
+                              Font: =Font.Arial
+                              Height: =252
+                              HoverBorderColor: =RGBA(0, 18, 107, 1)
+                              HoverFill: =RGBA(186, 202, 226, 1)
+                              Mode: =TextMode.MultiLine
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Size: =24
+                              Width: =577
+                              X: =30
+                              Y: =41
+                  - conFieldUpload:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                      Children:
+                        - UploadedImage1_1:
+                            Control: Image@2.2.3
+                            Group: AddMediaWithImage1_1
+                            Properties:
+                              BorderColor: =RGBA(194, 194, 194, 1)
+                              BorderThickness: =1
+                              Height: =50
+                              Image: =If(IsBlank(AddMediaButton1_1.Media), SampleImage, AddMediaButton1_1.Media)
+                              ImagePosition: =ImagePosition.Fill
+                              Visible: =false
+                              Width: =577
+                              X: =1
+                              Y: =603
+                        - AddMediaButton1_1:
+                            Control: AddMedia@2.2.1
+                            Group: AddMediaWithImage1_1
+                            Properties:
+                              BorderColor: =RGBA(194, 194, 194, 1)
+                              BorderThickness: =1
+                              ChangePictureText: |-
+                                ="Datei auswählen" // @Chris #file-upload-select-file
+                              Color: =RGBA(64, 64, 64, 1)
+                              Font: =Font.Arial
+                              Height: =50
+                              Size: =14
+                              Text: ="Hier tippen oder klicken, um ein Bild einzufügen."
+                              Width: =577
+                              X: =1
+                              Y: =603
+                        - LblUploadeFileName_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Right
+                              AlignInContainer: =AlignInContainer.End
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(128, 128, 128, 1)
+                              Font: =Font.Arial
+                              FontWeight: =FontWeight.Semibold
+                              Height: =34
+                              PaddingLeft: =10
+                              PaddingRight: =10
+                              Size: =16
+                              Text: |-
+                                =// #add-uploaded-filename-label
+                                If(
+                                    IsBlank(AddMediaButton1.FileName),
+                                    "Kein File hochgeladen",
+                                    AddMediaButton1.FileName
+                                )
+
+                                /*
+                                If(
+                                    IsBlank(AddMediaButton1.FileName),
+                                    "NO FILE",
+                                    "FILE SELECTED"
+                                )
+                                */
+                              Width: =Parent.Width
+                              X: =346
+                              Y: =819
+                        - LblPatcherfolgreichText_1:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              Color: =RGBA(127, 178, 57, 1)
+                              Font: =Font.Arial
+                              FontWeight: =FontWeight.Semibold
+                              Height: =33
+                              Size: =20
+                              Text: ="Dein Eintrag wurde erfolgreich gespeichert."
+                              Visible: |
+                                =varShowSuccess
+                              Width: =Parent.Width
+                              X: =29
+                              Y: =60
+                        - Form1_1:
+                            Control: Form@2.4.4
+                            Variant: Classic
+                            Layout: Vertical
+                            Properties:
+                              BorderColor: =RGBA(0, 18, 107, 1)
+                              DataSource: =Pers001_Absences
+                              FillPortions: =0
+                              Height: =Parent.Height
+                              Item: |-
+                                =// If(IsBlank(varCurrentRecord), Defaults(Pers001_Absences), varCurrentRecord)
+                                varCurrentRecord
+                                // gblAbsence
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              OnSuccess: |+
+                                =Refresh(Pers001_Absences);
+
+                                ClearCollect(
+                                    colAbsences,
+                                    AddColumns(
+                                        Pers001_Absences,
+                                        EmployeeId, Employee_Id.Id,
+                                        EmployeeName, LookUp(ColMain_Employees, ID = Employee_Id.Id, EmployeeFullName),
+                                        ReasonValue, Reason.Value,
+                                        StatusValue, Status.Value
+                                    )
+                                );
+
+                                Reset(DpStarts_1);
+                                Reset(DpEnds_1);
+                                Reset(TxtRemark_1);
+                                Reset(DrpReason_1);
+
+                                ResetForm(Form1_1);
+                                NewForm(Form1_1);
+
+                                Set(varCurrentRecord, Blank());
+                                Set(varShowSuccess, true);
+                              Visible: =false
+                            Children:
+                              - Attachments_DataCard1_1:
+                                  Control: TypedDataCard@1.0.7
+                                  Variant: ClassicAttachmentsEdit
+                                  IsLocked: true
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    DataField: ="{Attachments}"
+                                    Default: =ThisItem.Attachments
+                                    DisplayName: =DataSourceInfo([@Pers001_Absences],DataSourceInfo.DisplayName,Attachments)
+                                    Height: =25
+                                    Required: =false
+                                    Update: =DataCardValue7_1.Attachments
+                                    Visible: =false
+                                    Width: =592
+                                    X: =0
+                                    Y: =0
+                                  Children:
+                                    - DataCardKey9_1:
+                                        Control: Label@2.5.1
+                                        MetadataKey: FieldName
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: =RGBA(0, 18, 107, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =25
+                                          Text: =Parent.DisplayName
+                                          Width: =126
+                                          Wrap: =false
+                                          X: =30
+                                          Y: =10
+                                    - DataCardValue7_1:
+                                        Control: Attachments@2.3.0
+                                        MetadataKey: FieldValue
+                                        Properties:
+                                          BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                                          DisplayMode: =Parent.DisplayMode
+                                          Font: =Font.'Open Sans'
+                                          Height: =100
+                                          HoverFill: =RGBA(186, 202, 226, 1)
+                                          ItemColor: =RGBA(255, 255, 255, 1)
+                                          ItemFill: =RGBA(56, 96, 178, 1)
+                                          ItemHoverFill: =RGBA(186, 202, 226, 1)
+                                          Items: =Parent.Default
+                                          MaxAttachments: =1
+                                          PaddingBottom: =5
+                                          PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                                          PaddingRight: =5
+                                          PaddingTop: =5
+                                          PressedColor: =RGBA(255, 255, 255, 1)
+                                          PressedFill: =RGBA(0, 18, 107, 1)
+                                          Tooltip: =Parent.DisplayName
+                                          Width: =Parent.Width - 60
+                                          X: =30
+                                          Y: =DataCardKey9_1.Y + DataCardKey9_1.Height + 5
+                                    - ErrorMessage9_1:
+                                        Control: Label@2.5.1
+                                        MetadataKey: ErrorMessage
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: =RGBA(168, 0, 0, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =10
+                                          Live: =Live.Assertive
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          Size: =24
+                                          Text: =Parent.Error
+                                          Visible: =Parent.DisplayMode=DisplayMode.Edit
+                                          Width: =Parent.Width - 60
+                                          X: =30
+                                          Y: =DataCardValue7_1.Y + DataCardValue7_1.Height
+                                    - StarVisible9_1:
+                                        Control: Label@2.5.1
+                                        MetadataKey: FieldRequired
+                                        Properties:
+                                          Align: =Align.Center
+                                          BorderColor: =RGBA(0, 0, 0, 1)
+                                          Color: =RGBA(0, 18, 107, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =DataCardKey9_1.Height
+                                          Text: ="*"
+                                          Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                          Width: =30
+                                          Wrap: =false
+                                          Y: =DataCardKey9_1.Y
+            - conFooter:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0.1
+                  Height: =72
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.Center
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  Width: =App.Width
+                Children:
+                  - BtnAbsendenForm_1:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        BorderColor: =ColorFade(Self.Fill, -15%)
+                        BorderThickness: =0
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(124, 124, 124, 1)
+                        DisabledColor: =RGBA(124, 124, 124, 1)
+                        DisplayMode: |-
+                          =If(
+                              IsBlank(DrpReason_1.Selected.Value),
+                              DisplayMode.Disabled,
+                              DisplayMode.Edit
+                          )
+                        Fill: =RGBA(246, 169, 96, 1)
+                        Font: =Font.Arial
+                        FontWeight: =FontWeight.Bold
+                        Height: '=Parent.Height - 20  '
+                        HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                        OnSelect: "=With(\n    {\n        empID: LookUp(\n            Pers001_Employees,\n            Lower(Trim(Email)) = Lower(Trim(User().Email)),\n            ID\n        )\n    },\n    If(\n        IsBlank(empID),\n        Set(varShowInfoPopup, true),\n\n        // ⭐ STEP 1: Create the record (fields only)\n        Set(\n            gblAbsence,\n            Patch(\n                Pers001_Absences,\n                Defaults(Pers001_Absences),\n                {\n                    Employee_Id: { Id: empID, Value: \"\" },\n                    Starts: DpStarts_1.SelectedDate,\n                    Ends: DpEnds_1.SelectedDate,\n                    Remark: TxtRemark_1.Text,\n                    Reason: DrpReason_1.Selected,\n                    Status: { Value: \"gemeldet\" }\n                }\n            )\n        );\n\n        // ⭐ STEP 2: Bind the form to the new record\n        Set(varCurrentRecord, gblAbsence);\n        EditForm(Form1_1);\n\n        // ⭐ STEP 3: Submit the form (this uploads the attachment)\n        SubmitForm(Form1_1)\n    )\n);\n\n\n\n\n\n/*\n// ATTACHMENT WORKING BUT NO OTHER FIELDS \nWith(\n    {\n        // 1. Get Employee ID\n        empID: LookUp(Pers001_Employees, Email = Lower(User().Email), ID),\n        \n        // 2. Capture files immediately into a local variable\n        myFiles: DataCardValue7_1.Attachments\n    },\n\n    // ONLY proceed if Employee ID exists\n    If(\n        !IsBlank(empID), \n        \n        // --- STEP 1: Create the Record ---\n        Set(\n            gblAbsence,\n            Patch(\n                Pers001_Absences,\n                Defaults(Pers001_Absences),\n                {\n                    Employee_Id: { Id: empID, Value: \"\" },\n                    Starts: DpStarts_1.SelectedDate,\n                    Ends: DpEnds_1.SelectedDate,\n                    Remark: TxtRemark_1.Text,\n                    Reason: DrpReason_1.Selected,\n                    Status: { Value: \"gemeldet\" }\n                }\n            )\n        );\n\n        // --- STEP 2: CRITICAL - Bind the Form ---\n        // Set variable so Form Item property reacts\n        Set(varCurrentRecord, gblAbsence);\n        \n        // Refresh to ensure SharePoint has the new ID ready\n        Refresh(Pers001_Absences);\n\n        // --- STEP 3: Submit ONLY if there are files ---\n        If(\n            !IsEmpty(myFiles),\n            \n            Notify(\"Creating record and uploading attachments...\", NotificationType.Information);\n            SubmitForm(Form1_1);\n            \n            // Reset inputs immediately after submit command fires\n            Reset(DpStarts_1);\n            Reset(DpEnds_1);\n            Reset(TxtRemark_1);\n            Reset(DrpReason_1);\n            \n            // Clear binding variable so form resets correctly next time\n            Set(varCurrentRecord, Blank());\n            // Note: ResetForm/Form NewForm will happen in OnSuccess or at the end safely\n        );\n\n        // --- STEP 4: Final Cleanup ---\n        // Refresh data collections to show the new record\n        Refresh(Pers001_Absences);\n        \n        ClearCollect(\n            colAbsences,\n            AddColumns(\n                Pers001_Absences,\n                EmployeeId, Employee_Id.Id,\n                EmployeeName, LookUp(ColMain_Employees, ID = Employee_Id.Id, EmployeeFullName),\n                ReasonValue, Reason.Value,\n                StatusValue, Status.Value\n            )\n        );\n\n        // Notify success if NO files were uploaded (since we didn't trigger OnSuccess logic)\n        If(\n            IsEmpty(myFiles),\n            Notify(\"Record created successfully (no attachments)\", NotificationType.Success)\n        );\n\n        // Ensure Form is reset to New state for next use\n        // We do this unconditionally here, but ensure varCurrentRecord was cleared above\n        ResetForm(Form1_1);\n        NewForm(Form1_1);\n        \n        // Also clear inputs one last time if they weren't cleared in the 'If' block above\n        Reset(DpStarts_1);\n        Reset(DpEnds_1);\n        Reset(TxtRemark_1);\n        Reset(DrpReason_1);\n    );\n\n    // If No Employee found (outside the main If block):\n    // We already set the popup, but let's ensure UI is clean\n    Set(varShowInfoPopup, true);\n    Reset(DpStarts_1);\n    Reset(DpEnds_1);\n    Reset(TxtRemark_1);\n    Reset(DrpReason_1);\n    ResetForm(Form1_1);\n    NewForm(Form1_1);\n);\n*/\n\n/*\n    // Full Code working with all BUT ATTACHMENT ! inputfileds correct into List Pers001_Absences:\n    // @gaudenz\n    With(\n        {\n            gblEmployeeID:\n                LookUp(\n                    Pers001_Employees,\n                    Email = Lower(User().Email),\n                    ID\n                )\n        },\n        If(\n            IsBlank(gblEmployeeID),\n\n            // FALL: Kein Employee oder keine ID\n            Set(varShowInfoPopup, true),\n\n            // FALL: Employee vorhanden -> Step 1: Create the core record first\n            Set(\n                gblAbsence,\n                Patch(\n                    Pers001_Absences,\n                    Defaults(Pers001_Absences),\n                    {\n                        Employee_Id: {\n                            Id: gblEmployeeID,\n                            Value: \"\"\n                        },\n                        Starts: DpStarts_1.SelectedDate,\n                        Ends: DpEnds_1.SelectedDate,\n                        Remark: TxtRemark_1.Text,\n                        Reason: DrpReason_1.Selected,\n                        Status: { Value: \"gemeldet\" }\n                    }\n                )\n            );\n\n            // ⭐ Step 2: Push attachment file binary safely \n            If(\n                !IsEmpty(DataCardValue7_1.Attachments),\n                \n                // Forces Form1_1 to prepare for an Edit commit matching our fresh gblAbsence row\n                EditForm(Form1_1);\n                \n                // Submits the standalone file attachment data directly to your newly created absence ID\n                SubmitForm(Form1_1)\n            );\n\n            // Step 3: Track local file paths after successful creation\n            If(\n                !IsEmpty(DataCardValue7_1.Attachments),\n                Collect(\n                    colAbsenceFiles,\n                    {\n                        AbsenceId: gblAbsence.ID,\n                        EmployeeId: gblEmployee.ID,\n                        EmployeeName: gblEmployee.First_Name & \" \" & gblEmployee.Last_Name,\n                        FileName: Last(DataCardValue7_1.Attachments).Name,\n                        FileUrl: Last(gblAbsence.Attachments).AbsoluteUri\n                    }\n                )\n            );\n\n            Set(varShowSuccess, true)\n        )\n    );\n\n    // Synchronize changes securely with your SharePoint environment\n    Refresh(Pers001_Absences);\n\n    // Rebuild your admin management collection layout tracking grid\n    ClearCollect(\n        colAbsences,\n        AddColumns(\n            Pers001_Absences,\n            EmployeeId, Employee_Id.Id,\n            EmployeeName, LookUp(ColMain_Employees, ID = Employee_Id.Id, EmployeeFullName),\n            ReasonValue, Reason.Value,\n            StatusValue, Status.Value\n        )\n    );\n\n    // Clear form input UI back to fresh defaults\n    Reset(DpStarts_1);\n    Reset(DpEnds_1);\n    Reset(TxtRemark_1);\n    Reset(DrpReason_1);\n\n    // Safely clear file cache container without triggering validation blocks\n    ResetForm(Form1_1);\n    NewForm(Form1_1);\n*/\n/// --------\n\n\n//// ----------\n /*\n \n    // Version flow \n    // @gaudenz\n    With(\n        {\n            gblEmployeeID:\n                LookUp(\n                    Pers001_Employees,\n                    Email = Lower(User().Email),\n                    ID\n                )\n        },\n        If(\n            IsBlank(gblEmployeeID),\n\n            // FALL: Kein Employee oder keine ID\n            Set(varShowInfoPopup, true),\n\n            // FALL: Employee vorhanden -> Patch ausführen\n            Set(\n                gblAbsence,\n                Patch(\n                    Pers001_Absences,\n                    Defaults(Pers001_Absences),\n                    {\n                        Employee_Id: {\n                            Id: gblEmployeeID,\n                            Value: \"\"\n                        },\n                        Starts: DpStarts_1.SelectedDate,\n                        Ends: DpEnds_1.SelectedDate,\n                        Remark: TxtRemark_1.Text,\n                        Reason: DrpReason_1.Selected,\n                        Status: { Value: \"gemeldet\" }\n                    }\n                )\n            );\n\n            Set(varShowSuccess, true)\n        )\n    );\n\n    // ⭐ Force SharePoint to give fresh data\n    Refresh(Pers001_Absences);\n\n    // ⭐ Rebuild your admin collection\n    ClearCollect(\n        colAbsences,\n        AddColumns(\n            Pers001_Absences,\n            EmployeeId, Employee_Id.Id,\n            EmployeeName, LookUp(ColMain_Employees, ID = Employee_Id.Id, EmployeeFullName),\n            ReasonValue, Reason.Value,\n            StatusValue, Status.Value\n        )\n    );\n*/\n// ---------------------------------------\n\n    // 3b. Upload doctor note image (from AddMediaButton1)\n    //#fixed-refresh-ScrAllAbsencesList-after-new-absence-form-sent\n    /*\n    If(\n        !IsBlank(AddMediaButton1.FileName),\n        With(\n            {\n                _flowResult: Flow_UploadAbsenceDoc.Run(\n                    AddMediaButton1.FileName,\n                    gblAbsence.ID,\n                    gblEmployee.ID,\n                    gblEmployee.First_Name & \" \" & gblEmployee.Last_Name,\n                    {\n                        name: AddMediaButton1.FileName,\n                        contentBytes: Mid(\n                            JSON(AddMediaButton1.Media, JSONFormat.IncludeBinaryData),\n                            2,\n                            Len(JSON(AddMediaButton1.Media, JSONFormat.IncludeBinaryData)) - 2\n                        )\n                    }\n                )\n            },\n            Collect(\n                colAbsenceFiles,\n                {\n                    AbsenceId: gblAbsence.ID,\n                    EmployeeId: gblEmployee.ID,\n                    EmployeeName: gblEmployee.First_Name & \" \" & gblEmployee.Last_Name,\n                    FileName: AddMediaButton1.FileName,\n                    FileUrl:\n                        \"https://szhglobal.sharepoint.com/sites/seb-spo-abs-monitor-dev/Freigegebene%20Dokumente/Files/\" &\n                        AddMediaButton1.FileName\n                }\n            )\n        )\n    );\n    */\n\n    // ------------------------------------\n    /*\n    // Reset controls\n    Reset(DpStarts_1);\n    Reset(DpEnds_1);\n    Reset(TxtRemark_1);\n    Reset(DrpReason_1);\n    // #reset-label-filename-uploaded-onselect-send-form\n    Reset(AddMediaButton1_1);\n*/\n\n// DEBUG CALL NOTIFICATION\n// Notify(\n//     \"FileName: \" & AddMediaButton1.FileName &\n//     \" | AbsenceId: \" & Text(gblAbsence.ID) &//     \" | EmployeeId: \" & Text(gblEmployee.ID) &\n//     \" | EmployeeName: \" & gblEmployee.First_Name & \" \" & gblEmployee.Last_Name,\n//     NotificationType.Information\n// );\n// DEBUG CALL NOTIFICATION\n// Notify(\n//     \"FileName: \" & AddMediaButton1.FileName &\n//     \" | AbsenceId: \" & Text(gblAbsence.ID) &//     \" | EmployeeId: \" & Text(gblEmployee.ID) &\n//     \" | EmployeeName: \" & gblEmployee.First_Name & \" \" & gblEmployee.Last_Name,\n//     NotificationType.Information\n// );\n\n\n"
+                        PressedBorderColor: =Self.Fill
+                        PressedColor: =Self.Fill
+                        PressedFill: =Self.Color
+                        RadiusBottomLeft: =Parent.Height / 2
+                        RadiusBottomRight: =Parent.Height / 2
+                        RadiusTopLeft: =Parent.Height / 2
+                        RadiusTopRight: =Parent.Height / 2
+                        Size: =28
+                        Text: ="SENDEN"
+                        Underline: =true
+                        Width: =200
+                        X: =40
+                        Y: =40

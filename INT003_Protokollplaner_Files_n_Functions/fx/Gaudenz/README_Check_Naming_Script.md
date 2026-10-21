@@ -14,3 +14,10 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File .\check-naming.ps1 -Path .\ScrDash
 ---
 
 This checks the control and screen names in the YAML file and prints any naming violations. If no issues are found, it reports that the naming check passed.
+
+## Example Op
+
+```
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\INT003_Protokollplaner_Files_n_Functions\fx\Gaudenz\check-naming.ps1 -Path .\INT003_Protokollplaner_Files_n_Functions\fx\Gaudenz\INT003_Personal_Latest\ScrAbsenceForm.yaml
+
+```
