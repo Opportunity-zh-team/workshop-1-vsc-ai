@@ -1,7 +1,6 @@
 # INT003_Protokollplaner_Main
-Int003_Protocollplanning_Files using Github Copilot for PowerApps App
+
 ---
-## Test 1st Commit stage and push!
 
 ## Check YAML naming
 
@@ -19,5 +18,4 @@ This checks the control and screen names in the YAML file and prints any naming 
 
 ```
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\INT003_Protokollplaner_Files_n_Functions\fx\Gaudenz\check-naming.ps1 -Path .\INT003_Protokollplaner_Files_n_Functions\fx\Gaudenz\INT003_Personal_Latest\ScrAbsenceForm.yaml
-
 ```
