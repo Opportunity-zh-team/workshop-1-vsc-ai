@@ -531,3 +531,85 @@ If(
 Yes, you can set `locEnds` to 9:00 AM of the current day using the `DateAdd` function along with `Today()`. Here's how you can do it:
 locEnds: Today() + Time(9, 00, 0)
 
+/* I have this part of an if statement:
+If(
+    Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Topic) <> Trim(locTopic) ||
+    Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Description) <> Trim(locDescription) ||
+    LookUp(INT003_Meetings_List, ID = locMeetingID).Starts <> DtpDateBegin.SelectedDate +
+                    Time(
+                        Value(DrpMeetingStartHour.Selected.Value),
+                        Value(DrpMeetingStartMinutes.Selected.Value),
+                        0
+                    ) ||
+    LookUp(INT003_Meetings_List, ID = locMeetingID).Ends <> DtpDateEnd.SelectedDate +
+                    Time(
+                        Value(DrpMeetingEndHour.Selected.Value),
+                        Value(DrpMeetingEndMinutes.Selected.Value),
+                        0
+                    ) ||
+    Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Location) <> Trim(locLocation),
+
+Please enhance it, so it only triggers if locTopic or locDescription or locLocation or not blank */
+
+You can enhance the condition to only trigger if `locTopic`, `locDescription`, or `locLocation` are not blank by adding additional checks for these variables. Here's the modified code:
+If(
+    (!IsBlank(locTopic) && Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Topic) <> Trim(locTopic)) ||
+    (!IsBlank(locDescription) && Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Description) <> Trim(locDescription)) ||
+    (!IsBlank(locLocation) && Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Location) <> Trim(locLocation)) ||
+    LookUp(INT003_Meetings_List, ID = locMeetingID).Starts <> DtpDateBegin.SelectedDate +
+                    Time(
+                        Value(DrpMeetingStartHour.Selected.Value),
+                        Value(DrpMeetingStartMinutes.Selected.Value),
+                        0
+                    ) ||
+    LookUp(INT003_Meetings_List, ID = locMeetingID).Ends <> DtpDateEnd.SelectedDate +
+                    Time(
+                        Value(DrpMeetingEndHour.Selected.Value),
+                        Value(DrpMeetingEndMinutes.Selected.Value),
+                        0
+                    ),
+
+/* That is not yet what I wanted. It should only trigger if locTopic or locDescription or locLocation are not blank. So if all three are blank, it should not trigger. */
+You can modify the condition to ensure that it only triggers if at least one of `locTopic`, `locDescription`, or `locLocation` is not blank. Here's the updated code:
+If(
+    (!IsBlank(locTopic) || !IsBlank(locDescription) || !IsBlank(locLocation)) &&
+    (
+        Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Topic) <> Trim(locTopic) ||
+        Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Description) <> Trim(locDescription) ||
+        Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Location) <> Trim(locLocation) ||
+        LookUp(INT003_Meetings_List, ID = locMeetingID).Starts <> DtpDateBegin.SelectedDate +
+                        Time(
+                            Value(DrpMeetingStartHour.Selected.Value),
+                            Value(DrpMeetingStartMinutes.Selected.Value),
+                            0
+                        ) ||
+        LookUp(INT003_Meetings_List, ID = locMeetingID).Ends <> DtpDateEnd.SelectedDate +
+                        Time(
+                            Value(DrpMeetingEndHour.Selected.Value),
+                            Value(DrpMeetingEndMinutes.Selected.Value),
+                            0
+                        )
+    ),
+
+/* That's good, but I like it better with Trim-checks for locTopic, locDescription and locLocation. So it should only trigger if at least one of the three is not blank after trimming. */
+You can enhance the condition to include `Trim` checks for `locTopic`, `locDescription`, and `locLocation`. This way, it will only trigger if at least one of the three is not blank after trimming. Here's the updated code:
+If(
+    (Trim(locTopic)<>"" || Trim(locDescription)<>"" || Trim(locLocation)<>"") &&
+    (
+        Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Topic) <> Trim(locTopic) ||
+        Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Description) <> Trim(locDescription) ||
+        Trim(LookUp(INT003_Meetings_List, ID = locMeetingID).Location) <> Trim(locLocation) ||
+        LookUp(INT003_Meetings_List, ID = locMeetingID).Starts <> DtpDateBegin.SelectedDate +
+                        Time(
+                            Value(DrpMeetingStartHour.Selected.Value),
+                            Value(DrpMeetingStartMinutes.Selected.Value),
+                            0
+                        ) ||
+        LookUp(INT003_Meetings_List, ID = locMeetingID).Ends <> DtpDateEnd.SelectedDate +
+                        Time(
+                            Value(DrpMeetingEndHour.Selected.Value),
+                            Value(DrpMeetingEndMinutes.Selected.Value),
+                            0
+                        )
+    ),
+
